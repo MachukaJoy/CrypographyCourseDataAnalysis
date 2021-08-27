@@ -171,45 +171,12 @@ pre code {
 </div>
 
 
-<table style="width:6%;">
-<colgroup>
-<col width="5%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>Defining the question</td>
-</tr>
-<tr class="even">
-<td>A Kenyan entrepreneur has created an online cryptography course and would want to advertise it on her blog. She currently targets audiences originating from various countries. In the past, she ran ads to advertise a related course on the same blog and collected data in the process. She would now like to employ your services as a Data Science Consultant to help her identify which individuals are most likely to click on her ads.</td>
-</tr>
-</tbody>
-</table>
-<table style="width:6%;">
-<colgroup>
-<col width="5%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>Metric of success</td>
-</tr>
-<tr class="even">
-<td>Our analysis will be considered successful if we are able to analyze the data and get the most likely to take the course statistics.</td>
-</tr>
-</tbody>
-</table>
-<table style="width:6%;">
-<colgroup>
-<col width="5%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>Experimental Design</td>
-</tr>
-<tr class="even">
-<td>Data preparation Data Cleaning Univariate Analysis Bivariate Analysis</td>
-</tr>
-</tbody>
-</table>
+<p>Defining the question</p>
+<p>A Kenyan entrepreneur has created an online cryptography course and would want to advertise it on her blog. She currently targets audiences originating from various countries. In the past, she ran ads to advertise a related course on the same blog and collected data in the process. She would now like to employ your services as a Data Science Consultant to help her identify which individuals are most likely to click on her ads.</p>
+<p>Metric of success</p>
+<p>Our analysis will be considered successful if we are able to analyze the data and get the most likely to take the course statistics.</p>
+<p>Experimental Design</p>
+<p>Data preparation Data Cleaning Univariate Analysis Bivariate Analysis</p>
 <pre class="r"><code>#load dataset
 crypto &lt;- read.csv(&#39;http://bit.ly/IPAdvertisingData&#39;)
 head(crypto)</code></pre>
@@ -288,13 +255,7 @@ str(crypto)</code></pre>
 <pre class="r"><code>#searching for information about dataset
 ??crypto</code></pre>
 <pre><code>## starting httpd help server ... done</code></pre>
-<table>
-<tbody>
-<tr class="odd">
-<td>Data Cleaning</td>
-</tr>
-</tbody>
-</table>
+<p>Data Cleaning</p>
 <pre class="r"><code>#checking for null values per column
 colSums(is.na(crypto))</code></pre>
 <pre><code>## Daily.Time.Spent.on.Site                      Age              Area.Income 
