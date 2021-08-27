@@ -1,0 +1,330 @@
+---
+title: "CryptoCourseDataAnalysis"
+author: "Joy Machuka"
+date: "8/27/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+---
+Defining the question
+
+A Kenyan entrepreneur has created an online cryptography course and would want to advertise it on her blog. She currently targets audiences originating from various countries. In the past, she ran ads to advertise a related course on the same blog and collected data in the process. She would now like to employ your services as a Data Science Consultant to help her identify which individuals are most likely to click on her ads.
+---
+---
+Metric of success
+
+Our analysis will be considered successful if we are able to analyze the data and get the most likely to take the course statistics.
+---
+
+---
+Experimental Design 
+
+Data preparation
+Data Cleaning
+Univariate Analysis
+Bivariate Analysis
+
+---
+```{r}
+#load dataset
+crypto <- read.csv('http://bit.ly/IPAdvertisingData')
+head(crypto)
+```
+```{r}
+#preview the dataset
+View(crypto)
+```
+```{r}
+#viewing first 6 rows
+head(crypto, 6)
+```
+
+```{r}
+#check the shape of dataset
+dim(crypto)
+```
+```{r}
+#checking the class of our dataset
+class(crypto)
+```
+```{r}
+#checking column names
+names(crypto)
+```
+```{r}
+#checking datas types of variables
+str(crypto)
+```
+```{r}
+#searching for information about dataset
+??crypto
+```
+---
+Data Cleaning
+---
+
+```{r}
+#checking for null values per column
+colSums(is.na(crypto))
+```
+```{r}
+#checking for duplicates
+duplicated_rows <- crypto[duplicated(crypto),]
+duplicated_rows
+```
+There aren't any duplicated rows and missing data from our dataset as seen above.
+
+```{r}
+#checking for outliers
+boxplot(crypto$Age)
+boxplot(crypto$Daily.Time.Spent.on.Site)
+boxplot(crypto$Area.Income)
+boxplot(crypto$Daily.Internet.Usage)
+boxplot(crypto$Male)
+boxplot(crypto$Clicked.on.Ad)
+# boxplot(crypto$Ad.Topic.Line)
+# boxplot(crypto$City)
+# boxplot(crypto$Country)
+# boxplot(crypto$Timestamp)
+
+```
+```{r}
+# par(mfrow = c(2, 2))  # Set up a 2 x 2 plotting space
+# 
+# # Create the loop.vector (all the columns)
+# loop.vector <- 1:10
+# 
+# for (i in loop.vector) { # Loop over loop.vector
+# # store data in column.i as x
+#   x <- crypto[,i]
+# # Plot boxplot of x
+#   boxplot(x, main = paste("plot", i),
+#        xlim = c(0, 2))
+# }
+```
+
+
+```{r}
+# Viewing the outliers in the Area.Income column since it is the only column with outliers
+boxplot(crypto$Area.Income)
+```
+```{r}
+#viewing the outlier rows
+boxplot.stats(crypto$Area.Income)$out
+```
+```{r}
+quantile(crypto$Area.Income)
+```
+#We decided to leave our outliers since they seemed viable and helpful to our analysis after looking at the quantile distribution
+---
+Univariate Analysis
+---
+```{r}
+#summary statistics of all the columns
+summary(crypto)
+```
+
+```{r}
+num = crypto[,c(1,2,3,4,7,10)]
+summary(num)
+```
+```{r}
+#Mean
+mean(crypto$Daily.Time.Spent.on.Site)
+mean(crypto$Age)
+mean(crypto$Area.Income)
+mean(crypto$Daily.Internet.Usage)
+mean(crypto$Male)
+mean(crypto$Clicked.on.Ad)
+```
+```{r}
+# Median
+median(crypto$Daily.Time.Spent.on.Site)
+median(crypto$Age)
+median(crypto$Area.Income)
+median(crypto$Daily.Internet.Usage)
+median(crypto$Male)
+median(crypto$Clicked.on.Ad)
+```
+```{r}
+#mode of the columns
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+getmode(crypto$Daily.Time.Spent.on.Site)
+getmode(crypto$Age)
+getmode(crypto$Area.Income)
+getmode(crypto$Daily.Internet.Usage)
+getmode(crypto$Male)
+getmode(crypto$Clicked.on.Ad)
+
+```
+```{r}
+#Variance
+var(crypto$Daily.Time.Spent.on.Site)
+var(crypto$Age)
+var(crypto$Area.Income)
+var(crypto$Daily.Internet.Usage)
+var(crypto$Male)
+var(crypto$Clicked.on.Ad)
+```
+
+```{r}
+# Standard Deviation
+sd(crypto$Daily.Time.Spent.on.Site)
+sd(crypto$Age)
+sd(crypto$Area.Income)
+sd(crypto$Daily.Internet.Usage)
+sd(crypto$Male)
+sd(crypto$Clicked.on.Ad)
+```
+```{r}
+#Quantiles
+quantile(crypto$Daily.Time.Spent.on.Site)
+quantile(crypto$Age)
+quantile(crypto$Area.Income)
+quantile(crypto$Daily.Internet.Usage)
+quantile(crypto$Male)
+quantile(crypto$Clicked.on.Ad)
+```
+```{r}
+# par(mfrow = c(2, 5))  # Set up a 2 x 2 plotting space
+# 
+# # Create the loop.vector (all the columns)
+# loop.vector <- 1:10
+# 
+# for (i in loop.vector) { # Loop over loop.vector
+# 
+# # store data in column.i as x
+#   x <- crypto[,i]
+#   
+# # Plot histogram of x
+#   hist(x,
+#        main = paste("histogram", i),
+#        xlab = "Scores",
+#        xlim = c(0, 100))
+# }
+```
+```{r}
+hist(crypto$Area.Income, breaks = 10, main = "Area Income",col = "dodgerblue")
+```
+```{r}
+hist(crypto$Daily.Time.Spent.on.Site, breaks = 10, main = "Time Spent on site",col = "dodgerblue")
+```
+```{r}
+hist(crypto$Age, breaks = 10, main = "Age",col = "dodgerblue")
+```
+```{r}
+names(crypto)
+```
+```{r}
+hist(crypto$Daily.Internet.Usage, breaks = 20, main = "Daily.Internet.Usage",col = "dodgerblue")
+```
+```{r}
+male <- table(crypto$Male)
+barplot(male,main = "Male",col = topo.colors(2),ylim = c(0, 800))
+legend("topright",inset = .02, title="Gender",
+       c("Female","Male"), fill=topo.colors(2), cex=0.8)
+```
+```{r}
+clicked <- table(crypto$Clicked.on.Ad)
+barplot(clicked,main = "Clicked on Ad",col = topo.colors(2), ylim = c(0,800))
+legend("topright",inset = .02, title="Clicked on Ad",
+       c("Not Clicked","Clicked"), fill=topo.colors(2), cex=0.8)
+```
+```{r}
+par(las=2, cex.axis=0.7)
+country <- table(crypto$Country)
+barplot(sort(country[1:40], decreasing = TRUE), main = "Country",col = terrain.colors(20))
+```
+```{r}
+par(las=2)
+age <- table(crypto$Age)
+barplot(sort(age[1:20], decreasing = TRUE), main = "Age",col = terrain.colors(20))
+```
+```{r}
+# install.packages('dplyr')
+
+```
+```{r}
+# install.packages('ggplot2')
+```
+```{r}
+library("dplyr")
+library("ggplot2")
+# group by gender/Male
+by_time <- crypto %>% 
+  group_by(Male) %>% 
+  summarise(Total.Time.Spent.on.Site = sum(Daily.Time.Spent.on.Site))
+by_time
+p <- ggplot(by_time, aes(x = factor(Male), y = Total.Time.Spent.on.Site, fill = factor(Male)))+geom_bar(stat="identity")
+p + scale_fill_discrete(name = "Male", labels = c("Female","Male"))+ labs(title="Gender that spends more time on the Internet", x="Gender")
+```
+```{r}
+#separating clicked ads
+clicked_ad <- crypto[crypto$Clicked.on.Ad == 1,]
+
+```
+
+```{r}
+#countries with more clicked ads
+country <- crypto %>% group_by(Country) %>% summarise(clicked.ad =sum(Clicked.on.Ad[Clicked.on.Ad == 1]))
+
+```
+```{r}
+
+```
+
+```{r}
+# c <- ggplot(rows, aes(x = reorder(Country,clicked.ad), y=clicked.ad)) + geom_col() +coord_flip() +  geom_bar(stat="identity", fill="dodgerblue")
+# c + labs(title="Country with Highest Clicks on Ads", x="Countries", y="Clicked Ads")
+```
+```{r}
+# Females that click on ads
+gender <- crypto %>% group_by(Clicked.on.Ad) %>% summarise(gender = length(Male[Male == 0]))
+gender
+
+females <- ggplot(gender, aes(x = factor(Clicked.on.Ad), y = gender, fill=factor(Clicked.on.Ad))) + geom_bar(stat="identity")
+females + scale_fill_discrete(name = "Ad Clicked", labels = c("Not Clicked","Clicked"))+ labs(title="Females that Clicked vs Not Clicked", x="Clicked on Ad", y="No. of Females")
+
+```
+```{r}
+# Males that clicked on ads
+males <- crypto %>% group_by(Clicked.on.Ad) %>% summarise(gender = length(Male[Male == 1]))
+males
+
+males <- ggplot(males, aes(x = factor(Clicked.on.Ad), y = gender, fill=factor(Clicked.on.Ad))) + geom_bar(stat="identity")
+males + scale_fill_discrete(name = "Ad Clicked", labels = c("Not Clicked","Clicked"))+ labs(title="Males that Clicked vs Not Clicked", x="Clicked on Ad", y="No. of Males")
+```
+
+Bivariate Analysis
+```{r}
+str(crypto)
+
+head(num,4)
+```
+```{r}
+# Covariance
+covariance = cov(num)
+View(round(covariance,2))
+```
+```{r}
+# Correlation Matrix
+correlation_matrix = cor(num)
+View(round(correlation_matrix,2))
+```
+```{r}
+# Scatter Plot
+area.income <- crypto$Area.Income
+internet.usage <- crypto$Daily.Internet.Usage
+time.spent <- crypto$Daily.Time.Spent.on.Site
+
+plot(area.income, internet.usage, xlab="Area Income",ylab = "Daily Internet Usage")
+plot(area.income,time.spent,xlab = "Area Income",ylab = "Daily Time Spent on the Internet")
+plot(time.spent,internet.usage, xlab="Daily Time spent", ylab="Daily Internet Usage")
+```
